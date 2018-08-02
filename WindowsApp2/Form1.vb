@@ -13,6 +13,8 @@ Public Class Form1
     Private Observations As Integer
     Private NumRecords As Integer
     Private Vlsperrec As Integer = 20
+    Private lstCol As Integer = 0
+
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -46,6 +48,21 @@ Public Class Form1
             For i As Integer = lbFields.Items.Count - 1 To 0 Step -1
                 lbFields.Items.RemoveAt(i)
             Next
+
+            If DataGridView1.Columns.Count > 1 Then
+                For i = DataGridView1.Columns.Count - 1 To 1 Step -1
+                    DataGridView1.Columns.RemoveAt(i)
+                Next
+            End If
+
+            If DataGridView1.Rows.Count > 1 Then
+                For i = DataGridView1.Rows.Count - 1 To 0 Step -1
+                    DataGridView1.Rows.RemoveAt(i)
+                Next
+            End If
+
+            lstCol = 0
+
         End If
 
     End Sub
@@ -55,12 +72,8 @@ Public Class Form1
         Dim line As String = ""
         Dim lined As String = ""
         Dim dline As String = ""
-
-        'IOBS = IBASYR2 - IBASYR1 + 1
-        'ICENTURY = 100 * Int(IBASYR1 / 100)
-        'IOBS = IOBS * IPERIOD
-        'IRECORD = Int(IOBS / 20)
-        'If IRECORD * 20 < IOBS Then IRECORD = IRECORD + 1
+        Dim Quarter = {"Q1", "Q2", "Q3", "Q4"}
+        Dim Months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}
 
         TempStr = txtDBName.Text
         TempStr = Trim(TempStr)
@@ -124,8 +137,28 @@ Public Class Form1
             NumRecords = NumRecords + 1
         End If
 
+        If InYear = 4 Then
+            DataGridView1.Columns.Add("Quarter", "Quarter")
+        End If
+        If InYear = 12 Then
+            DataGridView1.Columns.Add("Month", "Month")
+        End If
+
+
         For i As Integer = StartYear To EndYear
-            DataGridView1.Rows.Add(Convert.ToString(i))
+            If InYear = 1 Then
+                DataGridView1.Rows.Add(Convert.ToString(i))
+            ElseIf InYear = 4 Then
+                For j As Integer = 0 To 3
+                    DataGridView1.Rows.Add(Convert.ToString(i), Quarter(j))
+                    lstCol = 1
+                Next j
+            ElseIf InYear = 12 Then
+                For j As Integer = 0 To 11
+                    DataGridView1.Rows.Add(Convert.ToString(i), Months(j))
+                    lstCol = 1
+                Next
+            End If
         Next
 
     End Sub
@@ -251,7 +284,6 @@ Public Class Form1
         Dim theObs As Integer
         Dim x As Integer
         Dim TempStrArry() As String
-        Dim lstCol As Integer = 0
 
         Try
             ' Create an instance of StreamReader to read from a file.
