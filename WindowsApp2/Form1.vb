@@ -55,9 +55,12 @@ Public Class Form1
                 Next
             End If
 
+
             If DataGridView1.Rows.Count > 1 Then
                 For i = DataGridView1.Rows.Count - 1 To 0 Step -1
-                    DataGridView1.Rows.RemoveAt(i)
+                    If DataGridView1.Rows(i).IsNewRow = False Then
+                        DataGridView1.Rows.RemoveAt(i)
+                    End If
                 Next
             End If
 
