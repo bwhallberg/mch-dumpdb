@@ -39,6 +39,8 @@ Partial Class Form1
         Me.BtnCopyData = New System.Windows.Forms.Button()
         Me.DataGridView1 = New System.Windows.Forms.DataGridView()
         Me.Year = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.SaveFileDialogDB = New System.Windows.Forms.SaveFileDialog()
+        Me.BtnExportData = New System.Windows.Forms.Button()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -161,7 +163,7 @@ Partial Class Form1
         'BtnCopyData
         '
         Me.BtnCopyData.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BtnCopyData.Location = New System.Drawing.Point(252, 399)
+        Me.BtnCopyData.Location = New System.Drawing.Point(168, 399)
         Me.BtnCopyData.Name = "BtnCopyData"
         Me.BtnCopyData.Size = New System.Drawing.Size(75, 23)
         Me.BtnCopyData.TabIndex = 14
@@ -182,11 +184,25 @@ Partial Class Form1
         Me.Year.HeaderText = "Year"
         Me.Year.Name = "Year"
         '
+        'SaveFileDialogDB
+        '
+        '
+        'BtnExportData
+        '
+        Me.BtnExportData.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnExportData.Location = New System.Drawing.Point(314, 399)
+        Me.BtnExportData.Name = "BtnExportData"
+        Me.BtnExportData.Size = New System.Drawing.Size(97, 23)
+        Me.BtnExportData.TabIndex = 17
+        Me.BtnExportData.Text = "&Export Data"
+        Me.BtnExportData.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(588, 434)
+        Me.Controls.Add(Me.BtnExportData)
         Me.Controls.Add(Me.DataGridView1)
         Me.Controls.Add(Me.BtnCopyData)
         Me.Controls.Add(Me.lblFields)
@@ -227,4 +243,6 @@ Partial Class Form1
     Friend WithEvents BtnCopyData As Button
     Friend WithEvents DataGridView1 As DataGridView
     Friend WithEvents Year As DataGridViewTextBoxColumn
+    Friend WithEvents SaveFileDialogDB As SaveFileDialog
+    Friend WithEvents BtnExportData As Button
 End Class

@@ -6,6 +6,7 @@ Imports System.IO
 Public Class Form1
     Private FieldNameFile As String
     Private FieldDescFile As String
+    Private FieldExportFile As String
     Private TempStr As String
     Private StartYear As Integer
     Private EndYear As Integer
@@ -84,6 +85,7 @@ Public Class Form1
         strIdx = InStr(1, TempStr, ".DAT")
         FieldNameFile = Microsoft.VisualBasic.Left(TempStr, strIdx) + "nme"
         FieldDescFile = Microsoft.VisualBasic.Left(TempStr, strIdx) + "dsc"
+        FieldExportFile = Microsoft.VisualBasic.Left(TempStr, strIdx) + "csv"
 
         Try
             ' Create an instance of StreamReader to read from a file.
@@ -230,7 +232,6 @@ Public Class Form1
     '          b = bit
     '
     Public Function CVSMBF(ByVal s As String) As Single
-        Dim i As Integer
         Dim msbin(4) As Byte
         Dim ieee(4) As Byte
         Dim ieee_exp As Byte
@@ -311,7 +312,7 @@ Public Class Form1
             TempStr = TempStrArry(0)
             DataGridView1.Columns.Add(TempStr, TempStr)
             lstCol = lstCol + 1
-            Dim offset As Integer = (Vlsperrec * NumRecords * x)
+            Dim offset As Integer = (Vlsperrec * NumRecords * x) * 4
             '
             '  Now loop thru the data, convert it and storeit in the data grid
             '
@@ -325,6 +326,49 @@ Public Class Form1
     End Sub
 
     Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellContentClick
+
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles BtnExportData.Click
+
+        ' create an empty string for the file
+        Dim thecsvfile As String = String.Empty
+        ' Get column headers
+        For Each column As DataGridViewColumn In DataGridView1.Columns
+            thecsvfile = thecsvfile & column.HeaderText & ","
+        Next
+        ' trim extra comma
+        thecsvfile = thecsvfile.TrimEnd(",")
+        ' Add the line to the csv file
+        thecsvfile = thecsvfile & vbCr & vbLf
+        ' now get the data
+        For Each row As DataGridViewRow In DataGridView1.Rows
+            ' get the cells
+            For Each cell As DataGridViewCell In row.Cells
+                ' add to csv file
+                thecsvfile = thecsvfile & cell.FormattedValue & ","
+            Next
+            ' trim extra comma
+            thecsvfile = thecsvfile.TrimEnd(",")
+            ' Add the line to the csv file
+            thecsvfile = thecsvfile & vbCr & vbLf
+        Next
+        Try
+            ' write the file
+            My.Computer.FileSystem.WriteAllText(FieldExportFile, thecsvfile, False)
+        Catch Ex As Exception
+            ' Let the user know what went wrong.
+            Console.WriteLine("The file could not be written:")
+            Console.WriteLine(Ex.Message)
+        End Try
+
+    End Sub
+
+    Private Sub OpenFileDialogDB_FileOk(sender As Object, e As ComponentModel.CancelEventArgs) Handles OpenFileDialogDB.FileOk
+
+    End Sub
+
+    Private Sub SaveFileDialogDB_FileOk(sender As Object, e As ComponentModel.CancelEventArgs) Handles SaveFileDialogDB.FileOk
 
     End Sub
 End Class
